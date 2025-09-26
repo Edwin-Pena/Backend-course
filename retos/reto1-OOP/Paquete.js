@@ -40,6 +40,7 @@ class Paquete {
     }
 
     this.#estadoPaquete = nuevoEstadoPaquete;
+    console.log(`El estado del paquete cambió a ${nuevoEstadoPaquete}`);
   }
 }
 
