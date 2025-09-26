@@ -1,10 +1,18 @@
-class Repartidor {
+import Persona from './pesona';
+
+class Repartidor extends Persona {
   #idEmpleado;
-  #paquetesAsignados;
-  constructor(nombre, idEmpleado) {
-    this.nombre = nombre;
+  constructor(nombre, id, idEmpleado) {
+    super(nombre, id);
     this.#idEmpleado = idEmpleado;
-    this.#paquetesAsignados = [];
+    this.paquetesAsignados = [];
+
+    console.log({
+      mensaje: 'Nuevo repartidor creado.',
+      idEmpleado: this.#idEmpleado,
+      nombre: this.nombre,
+      apellido: this.apellido,
+    });
   }
 
   get datosRepartidor() {
@@ -13,11 +21,11 @@ class Repartidor {
 
   asignarPaquete(paquete) {
     paquete.asignado();
-    this.#paquetesAsignados.push(paquete);
+    this.paquetesAsignados.push(paquete);
   }
 
   listarPaquetes() {
-    if (this.#paquetesAsignados === 0) {
+    if (this.paquetesAsignados === 0) {
       console.log(
         `El repartidor ${this.nombre} con id ${
           this.#idEmpleado
@@ -31,7 +39,7 @@ class Repartidor {
       } son:`
     );
 
-    this.#paquetesAsignados.forEach((paquete) => {
+    this.paquetesAsignados.forEach((paquete) => {
       console.log(
         `ID: ${paquete.id} || Peso: ${paquete.peso} || Origen: ${paquete.direccionOrigen} || Destino: ${paquete.direccionDestino} || Estado: ${paquete.estado}`
       );
@@ -39,7 +47,7 @@ class Repartidor {
   }
 
   consultarPaquete(idPaquete) {
-    const paquete = this.#paquetesAsignados.find(
+    const paquete = this.paquetesAsignados.find(
       (paquete) => paquete.id === idPaquete
     );
     if (paquete) {
@@ -56,7 +64,7 @@ class Repartidor {
   }
 
   entregarPaquete(idPaquete) {
-    const paquete = this.#paquetesAsignados.find(
+    const paquete = this.paquetesAsignados.find(
       (paquete) => paquete.id === idPaquete
     );
 
