@@ -1,25 +1,49 @@
+import { validarFormatoString } from './utils/validaciones.js';
+
 class Paquete {
-  #estado;
-  constructor(id, peso, direccionOrigen, direccionDestino) {
+  static validarString = validarFormatoString;
+  static estadosDelPaquete = [
+    'No asginado',
+    'Asignado',
+    'Enviado',
+    'Completado',
+    'No entregado',
+  ];
+
+  #estadoPaquete;
+  constructor(id, pesoKG, direccionOrigen, direccionDestino) {
+    Paquete.validarString(id, 'El id del paquete');
+
+    if (!Number.isFinite(pesoKG) || pesoKG < 0)
+      throw new Error(
+        `El peso del paquete debe ser un número válido mayor a 0`
+      );
+
+    Paquete.validarString(direccionOrigen, 'La dirección de origen');
+    Paquete.validarString(direccionDestino, 'La dirección de destino');
+
     this.id = id;
-    this.peso = peso;
+    this.pesoKG = pesoKG;
     this.direccionOrigen = direccionOrigen;
     this.direccionDestino = direccionDestino;
-    this.#estado = 'No Asignado';
+    this.#estadoPaquete = 'No asignado';
   }
 
-  asignado() {
-    this.#estado = 'Asignado';
-    console.log(`el paquete ${this.id} fue asignado`);
+  get estadoPaquete() {
+    return this.#estadoPaquete;
   }
 
-  entregado() {
-    this.#estado = 'Entregado';
-    console.log(`el paquete ${this.id} fue entregado`);
-  }
+  set estadoPaquete(nuevoEstadoPaquete) {
+    if (!Paquete.estadosDelPaquete.includes(nuevoEstadoPaquete)) {
+      throw new Error(
+        `"${nuevoEstadoPaquete}" no es un estado válido para el paquete`
+      );
+    }
 
-  get estado() {
-    return this.#estado;
+    this.#estadoPaquete = nuevoEstadoPaquete;
+    console.log(
+      `El estado del paquete ${this.id} cambió a ${nuevoEstadoPaquete}`
+    );
   }
 }
 

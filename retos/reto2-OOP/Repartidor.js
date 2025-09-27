@@ -1,85 +1,122 @@
-import Persona from './pesona';
+import Paquete from './Paquete.js';
+import Persona from './Persona.js';
+import { validarFormatoString } from './utils/validaciones.js';
 
 class Repartidor extends Persona {
   #idEmpleado;
-  constructor(nombre, id, idEmpleado) {
-    super(nombre, id);
+  constructor(nombre, apellido, documentoIdentidad, idEmpleado) {
+    validarFormatoString(nombre, 'El nombre del repartidor');
+    validarFormatoString(apellido, 'El apellido del repartidor');
+    validarFormatoString(
+      documentoIdentidad,
+      'El documento de identidad del repartidor',
+      8
+    );
+    validarFormatoString(idEmpleado, 'El ID del repartidor');
+    super(nombre, apellido, documentoIdentidad);
+
     this.#idEmpleado = idEmpleado;
     this.paquetesAsignados = [];
-
-    console.log({
-      mensaje: 'Nuevo repartidor creado.',
-      idEmpleado: this.#idEmpleado,
-      nombre: this.nombre,
-      apellido: this.apellido,
-    });
   }
 
-  get datosRepartidor() {
-    console.log(`Nombre: ${this.nombre} || ID: ${this.#idEmpleado}`);
+  #validarPaquetesAsignados() {
+    const totalPaquetes = this.paquetesAsignados.length;
+    if (totalPaquetes === 0) {
+      throw new Error(
+        `El repartidor ${this.infoRepartidor} no tiene paquetes asignados aún.`
+      );
+    }
+    return totalPaquetes;
+  }
+
+  #buscarPaquetePorId(idPaquete) {
+    return this.paquetesAsignados.find((paquete) => paquete.id === idPaquete);
+  }
+
+  get infoRepartidor() {
+    return `${this.nombre} ${this.apellido} con ID ${this.#idEmpleado}`;
   }
 
   asignarPaquete(paquete) {
-    paquete.asignado();
+    if (!(paquete instanceof Paquete)) {
+      throw new Error(
+        `${this.nombre} no puede recibir objetos que no sean paquetes válidos para Coordinadora`
+      );
+    }
+
+    if (this.#buscarPaquetePorId(paquete.id)) {
+      throw new Error(
+        `El paquete ${paquete.id} no fue asignado porque ya fue asignado al repartidor ${this.infoRepartidor} anteriormente`
+      );
+    }
+
+    paquete.estadoPaquete = 'Asignado';
     this.paquetesAsignados.push(paquete);
+    console.log(
+      `el paquete ${paquete.id} fue asignado al repartidor: ${this.infoRepartidor}`
+    );
   }
 
   listarPaquetes() {
-    if (this.paquetesAsignados === 0) {
-      console.log(
-        `El repartidor ${this.nombre} con id ${
-          this.#idEmpleado
-        } no tiene paquetes asignados`
-      );
-      return;
-    }
+    const totalPaquetes = this.#validarPaquetesAsignados();
     console.log(
-      `Los paquetes que se le asignaron al repartidor ${this.nombre} con id ${
-        this.#idEmpleado
-      } son:`
+      `El repartidor ${this.infoRepartidor} tiene ${totalPaquetes} ${
+        totalPaquetes === 1 ? 'paquete asignado:' : 'paquetes asignados:'
+      }`
     );
-
-    this.paquetesAsignados.forEach((paquete) => {
+    this.paquetesAsignados.forEach((paquete, i) => {
+      const numeroDePaquete = i + 1;
       console.log(
-        `ID: ${paquete.id} || Peso: ${paquete.peso} || Origen: ${paquete.direccionOrigen} || Destino: ${paquete.direccionDestino} || Estado: ${paquete.estado}`
+        `Paquete ${numeroDePaquete}: ID: ${paquete.id} | Peso(kg): ${paquete.pesoKG} | Origen: ${paquete.direccionOrigen} | Destino: ${paquete.direccionDestino} | Estado: ${paquete.estadoPaquete}`
       );
     });
   }
 
   consultarPaquete(idPaquete) {
-    const paquete = this.paquetesAsignados.find(
-      (paquete) => paquete.id === idPaquete
-    );
-    if (paquete) {
-      console.log(
-        `ID: ${paquete.id} || Peso: ${paquete.peso} || Origen: ${paquete.direccionOrigen} || Destino: ${paquete.direccionDestino} || Estado: ${paquete.estado}`
+    this.#validarPaquetesAsignados();
+    const paquete = this.#buscarPaquetePorId(idPaquete);
+
+    if (!paquete) {
+      throw new Error(
+        `No se puede consultar el paquete ${idPaquete} porque no esta en los paquetes asignados del repartidor ${this.infoRepartidor}`
       );
-      return;
     }
+
+    console.log(`Paquete ${idPaquete}:`);
+    console.log({
+      id: paquete.id,
+      peso: paquete.pesoKG,
+      origen: paquete.direccionOrigen,
+      destino: paquete.direccionDestino,
+      estado: paquete.estadoPaquete,
+    });
+  }
+
+  presentarse() {
     console.log(
-      `El repartidor ${this.nombre} con id ${
-        this.#idEmpleado
-      } no tiene asignado el paquete ${idPaquete}`
+      `Hola soy ${this.infoRepartidor}, el repartidor de Coordinadora encargado de transportar su paquete`
     );
   }
 
-  entregarPaquete(idPaquete) {
-    const paquete = this.paquetesAsignados.find(
-      (paquete) => paquete.id === idPaquete
-    );
+  entregarPaquete(idPaquete, cliente) {
+    this.#validarPaquetesAsignados();
+    const paquete = this.#buscarPaquetePorId(idPaquete);
 
-    if (paquete) {
-      paquete.entregado();
-      console.log(
-        `El paquete fue recogido en ${paquete.direccionOrigen} y entregado en ${paquete.direccionDestino}`
+    if (!paquete) {
+      throw new Error(
+        `El paquete ${idPaquete} no puede ser entregado porque no esta en los paquetes asignados al repartidor ${this.infoRepartidor}`
       );
-      return;
     }
 
+    if (!cliente) {
+      throw new Error(
+        `El paquete ${idPaquete} no puede ser entregado porque no se encontro al cliente que lo iba a recibir`
+      );
+    }
+
+    cliente.recibirPaquete(paquete);
     console.log(
-      `el paquete ${idPaquete} no fue asignado al repartidor ${
-        this.#idEmpleado
-      }`
+      `El paquete ${paquete.id} ha sido entregado con éxito por el repartidor ${this.infoRepartidor} a su destinatario ${cliente.infoCliente}`
     );
   }
 }
