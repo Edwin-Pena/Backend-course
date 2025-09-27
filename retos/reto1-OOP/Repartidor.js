@@ -2,13 +2,11 @@ import Paquete from './Paquete.js';
 import { validarFormatoString } from './utils/validaciones.js';
 
 class Repartidor {
-  static validarString = validarFormatoString;
-
   #idEmpleado;
   constructor(nombre, apellido, idEmpleado) {
-    Repartidor.validarString(nombre, 'El nombre del repartidor');
-    Repartidor.validarString(apellido, 'El apellido del repartidor');
-    Repartidor.validarString(idEmpleado, 'El ID del repartidor');
+    validarFormatoString(nombre, 'El nombre del repartidor');
+    validarFormatoString(apellido, 'El apellido del repartidor');
+    validarFormatoString(idEmpleado, 'El ID del repartidor');
 
     this.nombre = nombre;
     this.apellido = apellido;
