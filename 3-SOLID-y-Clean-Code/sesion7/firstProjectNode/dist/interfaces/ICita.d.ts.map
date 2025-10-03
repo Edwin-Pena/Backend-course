@@ -1,0 +1,1 @@
+{"version":3,"file":"ICita.d.ts","sourceRoot":"","sources":["../../src/interfaces/ICita.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,KAAK;IACpB,cAAc,EAAE,MAAM,CAAC;IACvB,SAAS,EAAE,MAAM,CAAC;IAClB,UAAU,EAAE,MAAM,CAAC;IAEnB,cAAc,IAAI;QAChB,cAAc,EAAE,MAAM,CAAC;QACvB,SAAS,EAAE,MAAM,CAAC;QAClB,MAAM,EAAE,MAAM,CAAC;KAChB,GAAG,IAAI,CAAC;CACV"}
