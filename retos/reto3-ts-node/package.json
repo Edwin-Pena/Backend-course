@@ -1,0 +1,19 @@
+{
+  "name": "reto3-ts-node",
+  "version": "1.0.0",
+  "description": "Sistema de agendamiento de citas",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./dist/index.js",
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "24.6.2",
+    "typescript": "5.9.3"
+  }
+}
