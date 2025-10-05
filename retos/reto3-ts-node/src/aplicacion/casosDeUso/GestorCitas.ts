@@ -32,7 +32,7 @@ export class GestorCitas implements PuertoGestionCitas {
     return cita;
   }
 
-  reprogramarCita(idPaciente: string, nuevaFechaCita: Date): ICita | undefined {
+  reprogramarCita(idPaciente: string, nuevaFechaCita: Date): ICita {
     const citaActual = this.validarSiExisteCita(idPaciente, 'reprogramar');
 
     citaActual.cambiarFechaCita(nuevaFechaCita);
