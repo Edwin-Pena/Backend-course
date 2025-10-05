@@ -36,6 +36,7 @@ export class GestorCitas implements PuertoGestionCitas {
     const citaActual = this.validarSiExisteCita(idPaciente, 'reprogramar');
 
     citaActual.cambiarFechaCita(nuevaFechaCita);
+    this.repositorioCita.actualizarCita(citaActual);
     return citaActual;
   }
 
