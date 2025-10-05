@@ -1,4 +1,4 @@
-import type { ICita } from '../dominio/ICita.js';
+import type { ICita } from '../../dominio/ICita.js';
 
 export interface RepositorioGestionCitas {
   agendarCita(cita: ICita): void;
