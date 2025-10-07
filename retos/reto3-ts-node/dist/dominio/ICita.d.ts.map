@@ -1,1 +1,1 @@
-{"version":3,"file":"ICita.d.ts","sourceRoot":"","sources":["../../src/dominio/ICita.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,KAAK;IACpB,eAAe,IAAI,MAAM,CAAC;IAC1B,gBAAgB,CAAC,UAAU,EAAE,IAAI,GAAG,IAAI,CAAC;CAC1C"}
+{"version":3,"file":"ICita.d.ts","sourceRoot":"","sources":["../../src/dominio/ICita.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,KAAK;IACpB,QAAQ,CAAC,UAAU,EAAE,MAAM,CAAC;IAC5B,eAAe,IAAI,MAAM,CAAC;IAC1B,gBAAgB,CAAC,UAAU,EAAE,IAAI,GAAG,IAAI,CAAC;CAC1C"}

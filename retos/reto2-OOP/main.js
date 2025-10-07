@@ -15,39 +15,17 @@ try {
   console.log('Creación de los paquetes:');
   console.log('');
 
-  const paquete1 = clienteEnvia1.programarRecogida(
-    'PQ01',
-    5.5,
-    'Cali',
-    'medellin'
-  );
-  const paquete2 = clienteEnvia1.programarRecogida(
-    'PQ02',
-    3,
-    'Baranquilla',
-    'Bogotá'
-  );
+  const paquete1 = clienteEnvia1.programarRecogida('PQ01', 5.5, 'Cali', 'medellin');
+  const paquete2 = clienteEnvia1.programarRecogida('PQ02', 3, 'Baranquilla', 'Bogotá');
 
-  const paquete3 = clienteEnvia2.programarRecogida(
-    'PQ03',
-    7,
-    'Cali',
-    'Palmira'
-  );
+  const paquete3 = clienteEnvia2.programarRecogida('PQ03', 7, 'Cali', 'Palmira');
 
-  const paquete4 = clienteEnvia2.programarRecogida(
-    'PQ04',
-    8,
-    'Pasto',
-    'Medellin'
-  );
+  const paquete4 = clienteEnvia2.programarRecogida('PQ04', 8, 'Pasto', 'Medellin');
 
   console.log(`estado inicial del paquete ${paquete4.estadoPaquete}`);
 
   //console.log(repartidor1);
-  console.log(
-    '---------------------------------------------------------------'
-  );
+  console.log('---------------------------------------------------------------');
 
   console.log('Asignación de paquetes a repartidores:');
   console.log('');
@@ -58,13 +36,9 @@ try {
   repartidor2.asignarPaquete(paquete4);
   //repartidor1.asignarPaquete(paquete1);
 
-  console.log(
-    '---------------------------------------------------------------'
-  );
+  console.log('---------------------------------------------------------------');
 
-  console.log(
-    'Los repartidores y los clientes se presentan y los clientes entregan los paquetes a los repartifores:'
-  );
+  console.log('Los repartidores y los clientes se presentan y los clientes entregan los paquetes a los repartifores:');
   console.log('');
 
   repartidor1.presentarse();
@@ -77,9 +51,7 @@ try {
   clienteEnvia2.entregarPaquete(paquete3);
   clienteEnvia2.entregarPaquete(paquete4);
 
-  console.log(
-    '---------------------------------------------------------------'
-  );
+  console.log('---------------------------------------------------------------');
 
   console.log('Consultar info relacionada a los paquetes:');
   console.log('');
@@ -90,9 +62,7 @@ try {
   repartidor2.listarPaquetes();
   repartidor2.consultarPaquete('PQ03');
 
-  console.log(
-    '---------------------------------------------------------------'
-  );
+  console.log('---------------------------------------------------------------');
 
   console.log(
     'Los repartidores y los clientes que reciben el paquete se presentan y los repartidores entregan los paquetes a los destinatarios:'
@@ -114,9 +84,7 @@ try {
   clienteRecibe2.recibirPaquete(paquete3);
   clienteRecibe2.recibirPaquete(paquete4);
 
-  clienteRecibe1.console.log(
-    `estado final del paquete ${paquete4.estadoPaquete}`
-  );
+  clienteRecibe1.console.log(`estado final del paquete ${paquete4.estadoPaquete}`);
 
   //console.log(repartidor1);
 } catch (error) {

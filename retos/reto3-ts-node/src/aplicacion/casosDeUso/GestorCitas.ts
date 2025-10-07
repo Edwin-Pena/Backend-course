@@ -1,7 +1,7 @@
 import { CitaMedica } from '../../dominio/CitaMedica.js';
 import type { ICita } from '../../dominio/ICita.js';
-import type { PuertoGestionCitas } from '../puertos/PuertoGestionCitas.js';
-import type { RepositorioGestionCitas } from '../puertos/RepositorioGestionCitas.js';
+import type { PuertoGestionCitas } from '../../dominio/puertos/PuertoGestionCitas.js';
+import type { RepositorioGestionCitas } from '../../dominio/puertos/RepositorioGestionCitas.js';
 
 export class GestorCitas implements PuertoGestionCitas {
   constructor(private repositorioCita: RepositorioGestionCitas) {}

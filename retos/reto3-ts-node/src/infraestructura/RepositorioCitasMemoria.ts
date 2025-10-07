@@ -1,4 +1,4 @@
-import type { RepositorioGestionCitas } from '../aplicacion/puertos/RepositorioGestionCitas.js';
+import type { RepositorioGestionCitas } from '../dominio/puertos/RepositorioGestionCitas.js';
 import type { ICita } from '../dominio/ICita.js';
 
 export class RepositorioCitasMemoria implements RepositorioGestionCitas {
