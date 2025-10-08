@@ -1,8 +1,13 @@
 import readline from 'node:readline';
 export class CLIAdaptadorCitas {
     gestorCitas;
+    rl;
     constructor(gestorCitas) {
         this.gestorCitas = gestorCitas;
+        this.rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout,
+        });
     }
     validarFecha(fechaCitaString) {
         const camposFecha = fechaCitaString.split('-');
@@ -25,7 +30,7 @@ export class CLIAdaptadorCitas {
             throw new Error(`en el mes ${mes} no existe el día ${dia}`);
         return fechaCita;
     }
-    agendarCita({ nombrePaciente, idPaciente, fechaCitaString, motivoCita }) {
+    agendarCita(nombrePaciente, idPaciente, fechaCitaString, motivoCita) {
         const fechaCita = this.validarFecha(fechaCitaString);
         const citaAgendada = this.gestorCitas.programarCita(nombrePaciente, idPaciente, fechaCita, motivoCita);
         return citaAgendada;
@@ -42,15 +47,72 @@ export class CLIAdaptadorCitas {
     listarCitas() {
         return this.gestorCitas.ListarCitas();
     }
-    iniciarAplicacion() {
-        const rl = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout,
-        });
-        rl.question(`What's your name?`, (name) => {
-            console.log(`Hi ${name}!`);
-            rl.close();
-        });
+    preguntarAlUsuario(texto) {
+        return new Promise((resolve) => this.rl.question(texto, resolve));
+    }
+    async iniciarAplicacion() {
+        /* const rl = readline.createInterface({
+          input: process.stdin,
+          output: process.stdout,
+        }); */
+        console.log(`
+----------------------------
+   MENÚ DE GESTIÓN DE CITAS
+----------------------------
+1. Agendar cita
+2. Reagendar cita
+3. Cancelar cita
+4. Listar citas
+5. Salir
+----------------------------
+`);
+        const opcionStr = await this.preguntarAlUsuario('Selecciona una opción: ');
+        const opcion = Number(opcionStr);
+        if (isNaN(opcion))
+            throw new Error('Tu respuesta debe ser un número');
+        if (opcion < 1 || opcion > 5)
+            throw new Error('Debes escoger una opcion válida entre 1 y 5');
+        switch (opcion) {
+            case 1: {
+                const nombrePaciente = await this.preguntarAlUsuario('Nombre del paciente: ');
+                const idPaciente = await this.preguntarAlUsuario('Cedula del paciente: ');
+                const fechaCitaString = await this.preguntarAlUsuario('Fecha de la cita (MM-DD-AAA): ');
+                const motivoCita = await this.preguntarAlUsuario('Motivo de la cita: ');
+                const CitaAgendada = this.agendarCita(nombrePaciente, idPaciente, fechaCitaString, motivoCita);
+                console.log(`\n Has agendado correctamente la cita: \n ${CitaAgendada.resumenInfoCita()}`);
+                break;
+            }
+            case 2: {
+                const idPaciente = await this.preguntarAlUsuario('Cedula del paciente: ');
+                const nuevaFechaCitaString = await this.preguntarAlUsuario('Fecha de la cita (MM-DD-AAA): ');
+                const citaReprogramada = this.reagendarCita(idPaciente, nuevaFechaCitaString);
+                console.log(`\n Has reagendado correctamente la cita: ${citaReprogramada.resumenInfoCita()}`);
+                break;
+            }
+            case 3: {
+                const idPaciente = await this.preguntarAlUsuario('Cedula del paciente: ');
+                const citaCancelada = this.cancelarCita(idPaciente);
+                console.log(`\n Has cancelado correctamente la cita: ${citaCancelada.resumenInfoCita()}`);
+                break;
+            }
+            case 4: {
+                const citasAgendadas = this.listarCitas();
+                console.log('\n Las citas agendadas son: ');
+                if (citasAgendadas.length === 0) {
+                    console.log('No hay citas agendadas en este momento');
+                }
+                citasAgendadas.forEach((cita) => {
+                    console.log(cita.resumenInfoCita());
+                });
+                break;
+            }
+            case 5: {
+                console.log('Saliendo de la aplicación...');
+                this.rl.close();
+                return;
+            }
+        }
+        await this.iniciarAplicacion();
     }
 }
 //# sourceMappingURL=CLIAdaptadorCitas.js.map

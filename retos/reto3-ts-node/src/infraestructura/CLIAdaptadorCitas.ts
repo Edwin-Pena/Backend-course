@@ -2,17 +2,15 @@ import type { PuertoGestionCitas } from '../dominio/puertos/PuertoGestionCitas.j
 import type { ICita } from '../dominio/ICita.js';
 
 import readline from 'node:readline';
-import { resolve } from 'node:path';
-
-interface infoCita {
-  nombrePaciente: string;
-  idPaciente: string;
-  fechaCitaString: string;
-  motivoCita: string;
-}
 
 export class CLIAdaptadorCitas {
-  constructor(private gestorCitas: PuertoGestionCitas) {}
+  private rl: readline.Interface;
+  constructor(private gestorCitas: PuertoGestionCitas) {
+    this.rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+  }
 
   private validarFecha(fechaCitaString: string): Date {
     const camposFecha = fechaCitaString.split('-');
@@ -40,7 +38,7 @@ export class CLIAdaptadorCitas {
     return fechaCita;
   }
 
-  private agendarCita({ nombrePaciente, idPaciente, fechaCitaString, motivoCita }: infoCita): ICita {
+  private agendarCita(nombrePaciente: string, idPaciente: string, fechaCitaString: string, motivoCita: string): ICita {
     const fechaCita = this.validarFecha(fechaCitaString);
     const citaAgendada = this.gestorCitas.programarCita(nombrePaciente, idPaciente, fechaCita, motivoCita);
     return citaAgendada;
@@ -64,15 +62,15 @@ export class CLIAdaptadorCitas {
     return this.gestorCitas.ListarCitas();
   }
 
-  private preguntarAlUsuario(rl: readline.Interface, texto:string){
-    return new Promise((resolve)=> )
+  private preguntarAlUsuario(texto: string): Promise<string> {
+    return new Promise((resolve) => this.rl.question(texto, resolve));
   }
 
-  iniciarAplicacion() {
-    const rl = readline.createInterface({
+  async iniciarAplicacion() {
+    /* const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
-    });
+    }); */
 
     console.log(`
 ----------------------------
@@ -86,18 +84,60 @@ export class CLIAdaptadorCitas {
 ----------------------------
 `);
 
-    rl.question(`Selecciona una opción`, (opcionStr: string) => {
-      /* console.log(`Hi ${name}!`);
-      rl.close(); */
-      const opcion = Number(opcionStr);
+    const opcionStr = await this.preguntarAlUsuario('Selecciona una opción: ');
+    const opcion = Number(opcionStr);
 
-      if (isNaN(opcion)) throw new Error('Tu respuesta debe ser un número');
-      if (opcion < 1 || opcion > 5) throw new Error('Debes escoger una opcion válida entre 1 y 5');
+    if (isNaN(opcion)) throw new Error('Tu respuesta debe ser un número');
+    if (opcion < 1 || opcion > 5) throw new Error('Debes escoger una opcion válida entre 1 y 5');
 
-      switch (opcion) {
-        case 1:
-          
+    switch (opcion) {
+      case 1: {
+        const nombrePaciente = await this.preguntarAlUsuario('Nombre del paciente: ');
+        const idPaciente = await this.preguntarAlUsuario('Cedula del paciente: ');
+        const fechaCitaString = await this.preguntarAlUsuario('Fecha de la cita (MM-DD-AAA): ');
+        const motivoCita = await this.preguntarAlUsuario('Motivo de la cita: ');
+
+        const CitaAgendada = this.agendarCita(nombrePaciente, idPaciente, fechaCitaString, motivoCita);
+        console.log(`\n Has agendado correctamente la cita: \n ${CitaAgendada.resumenInfoCita()}`);
+        break;
       }
-    });
+
+      case 2: {
+        const idPaciente = await this.preguntarAlUsuario('Cedula del paciente: ');
+        const nuevaFechaCitaString = await this.preguntarAlUsuario('Fecha de la cita (MM-DD-AAA): ');
+
+        const citaReprogramada = this.reagendarCita(idPaciente, nuevaFechaCitaString);
+        console.log(`\n Has reagendado correctamente la cita: ${citaReprogramada.resumenInfoCita()}`);
+        break;
+      }
+
+      case 3: {
+        const idPaciente = await this.preguntarAlUsuario('Cedula del paciente: ');
+
+        const citaCancelada = this.cancelarCita(idPaciente);
+        console.log(`\n Has cancelado correctamente la cita: ${citaCancelada.resumenInfoCita()}`);
+        break;
+      }
+
+      case 4: {
+        const citasAgendadas = this.listarCitas();
+        console.log('\n Las citas agendadas son: ');
+        if (citasAgendadas.length === 0) {
+          console.log('No hay citas agendadas en este momento');
+        }
+        citasAgendadas.forEach((cita) => {
+          console.log(cita.resumenInfoCita());
+        });
+
+        break;
+      }
+
+      case 5: {
+        console.log('Saliendo de la aplicación...');
+        this.rl.close();
+        return;
+      }
+    }
+    await this.iniciarAplicacion();
   }
 }

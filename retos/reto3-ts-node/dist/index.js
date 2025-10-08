@@ -6,9 +6,6 @@ try {
     const agendaMemoria = new RepositorioCitasMemoria([]); //adaptador secundario
     const gestorDeAgenda = new GestorCitas(agendaMemoria); // Caso de uso al que se le inyecta el adaptador secundario
     const EntradaDelUsuario = new CLIAdaptadorCitas(gestorDeAgenda); // adaptador primario al que se le inyecta el caso de uso
-    console.log(`------------------------------`);
-    console.log(`  Sistema gestión de citas`);
-    console.log(`------------------------------`);
     EntradaDelUsuario.iniciarAplicacion();
 }
 catch (error) {
