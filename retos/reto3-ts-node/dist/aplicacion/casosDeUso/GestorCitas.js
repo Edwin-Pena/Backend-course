@@ -16,6 +16,9 @@ export class GestorCitas {
         return this.repositorioCita.mostrarCitas();
     }
     programarCita(nombrePaciente, idPaciente, fechaCita, motivoCita) {
+        const hoy = new Date();
+        if (fechaCita < hoy)
+            throw new Error('Para agendar correctamente una cita debes escoger una fecha después de hoy');
         const cita = new CitaMedica(nombrePaciente, idPaciente, fechaCita, motivoCita);
         this.repositorioCita.agendarCita(cita);
         return cita;

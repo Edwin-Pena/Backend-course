@@ -25,8 +25,10 @@ export class GestorCitas implements PuertoGestionCitas {
   }
 
   programarCita(nombrePaciente: string, idPaciente: string, fechaCita: Date, motivoCita: string): ICita {
-    const cita = new CitaMedica(nombrePaciente, idPaciente, fechaCita, motivoCita);
+    const hoy = new Date();
+    if (fechaCita < hoy) throw new Error('Para agendar correctamente una cita debes escoger una fecha después de hoy');
 
+    const cita = new CitaMedica(nombrePaciente, idPaciente, fechaCita, motivoCita);
     this.repositorioCita.agendarCita(cita);
 
     return cita;
