@@ -1,10 +1,11 @@
 import Fastify from 'fastify';
 import { Plato } from './interfaces/plato';
 import { existeIdPlato, existeNombrePlato } from './validaciones/existenciaPlato';
+import { buscarIndicePorId } from './utils/buscarIndicePorId';
 
 const app = Fastify({ logger: true });
 
-const platos: Plato[] = [
+let platos: Plato[] = [
   { idPlato: '1', nombrePlato: 'Arroz con pollo' },
   { idPlato: '2', nombrePlato: 'Bandeja paisa' },
   { idPlato: '3', nombrePlato: 'Choripan' },
@@ -26,7 +27,7 @@ export const iniciarCocina = () => {
 
 //Consultar menu - Mesero o Endpoints
 
-//Método get y Query paramns
+//Método get y Query paramns - para consultar datos
 app.get('/platos', (req, res) => {
   const { limite } = req.query as { limite: number };
 
@@ -47,7 +48,7 @@ app.get('/platos/:idPlato', (req, res) => {
   return res.code(200).send({ mensaje: 'Plato encontrado satisfactoriamente', plato: plato });
 });
 
-// Método Post
+// Método Post -- para crear
 app.post('/platos', (req, res) => {
   const body = req.body as Plato;
   const platoPorId = existeIdPlato(platos, body.idPlato);
@@ -60,4 +61,19 @@ app.post('/platos', (req, res) => {
   platos.push(body);
 
   return res.code(201).send({ mensaje: `Plato creado correctamente`, plato: body });
+});
+
+// Método Put para modificar completamente elementos ya existentes
+app.put('/platos/:idPlato', (req, res) => {
+  const { idPlato } = req.params as { idPlato: string };
+  const nuevoPlato = req.body as Plato;
+  let indexPlato = buscarIndicePorId(platos, idPlato);
+
+  if (indexPlato === -1) {
+    return res.code(404).send({ error: 'El plato no pudo cambiarse porque no se encontró' });
+  }
+
+  platos[indexPlato] = nuevoPlato;
+
+  res.code(200).send({ mensaje: `El plato fue actualizado exitosamente`, platoActualizado: nuevoPlato });
 });
