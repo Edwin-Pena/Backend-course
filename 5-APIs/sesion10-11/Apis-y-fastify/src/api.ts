@@ -3,7 +3,6 @@ import Fastify from 'fastify';
 const app = Fastify({ logger: true });
 
 //Objetos de menu
-
 interface Plato {
   idPlato: string;
   nombrePlato: string;
@@ -32,8 +31,7 @@ export const iniciarCocina = () => {
 
 //Consultar menu - Mesero o Endpoints
 
-//path query o query paramns
-
+//Método get y Query paramns
 app.get('/platos', (req, res) => {
   const { limite } = req.query as { limite: number };
 
@@ -42,7 +40,7 @@ app.get('/platos', (req, res) => {
   return res.code(200).send({ mensaje: 'Este es el menu disponible', menu: menuFiltrado });
 });
 
-//path params
+//Path params
 app.get('/platos/:idPlato', (req, res) => {
   const { idPlato } = req.params as { idPlato: string };
   const plato = platos.find((plato) => plato.idPlato === idPlato);
@@ -54,11 +52,9 @@ app.get('/platos/:idPlato', (req, res) => {
   return res.code(200).send({ mensaje: 'Plato encontrado satisfactoriamente', plato: plato });
 });
 
-//Post
+// Método Post
 app.post('/platos', (req, res) => {
   const body = req.body as Plato;
-
   platos.push(body);
-
-  return res.code(200).send({ mensaje: `Plato creado correctamente` });
+  return res.code(200).send({ mensaje: `Plato creado correctamente`, plato: body });
 });
