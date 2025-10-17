@@ -98,5 +98,21 @@ app.patch('/platos/:idPlato', (req, res) => {
     plato.ingredienteAdicional = platoActualizado.ingredienteAdicional;
   }
 
-  res.code(200).send({ mensaje: `El plato fue actualizado exitosamente`, platoActualizado: plato });
+  res.code(200).send({ mensaje: 'El plato fue actualizado exitosamente', platoActualizado: plato });
+});
+
+//Método Delete -- para eliminar elementos
+app.delete('/platos/:idPlato', (req, res) => {
+  const { idPlato } = req.params as { idPlato: string };
+  const indexPlato = buscarIndicePorId(platos, idPlato);
+
+  const plato = platos[indexPlato];
+
+  if (indexPlato === -1) {
+    return res.code(404).send({ error: 'El plato no pudo ser eliminado porque no existe en los platos del menu' });
+  }
+
+  platos.splice(indexPlato, 1);
+
+  return res.code(200).send({ mensaje: 'El plato fue eliminado correctamente', paltoEliminado: plato });
 });
