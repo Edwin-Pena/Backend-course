@@ -63,11 +63,11 @@ app.post('/platos', (req, res) => {
   return res.code(201).send({ mensaje: `Plato creado correctamente`, plato: body });
 });
 
-// Método Put para modificar completamente elementos ya existentes
+// Método Put -- para modificar completamente elementos ya existentes
 app.put('/platos/:idPlato', (req, res) => {
   const { idPlato } = req.params as { idPlato: string };
   const nuevoPlato = req.body as Plato;
-  let indexPlato = buscarIndicePorId(platos, idPlato);
+  const indexPlato = buscarIndicePorId(platos, idPlato);
 
   if (indexPlato === -1) {
     return res.code(404).send({ error: 'El plato no pudo cambiarse porque no se encontró' });
@@ -76,4 +76,27 @@ app.put('/platos/:idPlato', (req, res) => {
   platos[indexPlato] = nuevoPlato;
 
   res.code(200).send({ mensaje: `El plato fue actualizado exitosamente`, platoActualizado: nuevoPlato });
+});
+
+//Método patch -- para modificar una parte de un elemento ya existente
+app.patch('/platos/:idPlato', (req, res) => {
+  const { idPlato } = req.params as { idPlato: string };
+  const platoActualizado = req.body as Plato;
+  const indexPlato = buscarIndicePorId(platos, idPlato);
+
+  let plato = platos[indexPlato];
+  console.log(plato);
+  console.log(platoActualizado);
+
+  if (!plato) {
+    return res.code(404).send({ error: 'El plato no pudo cambiarse porque no se encontró' });
+  }
+
+  plato.nombrePlato = platoActualizado.nombrePlato;
+
+  if (platoActualizado.ingredienteAdicional) {
+    plato.ingredienteAdicional = platoActualizado.ingredienteAdicional;
+  }
+
+  res.code(200).send({ mensaje: `El plato fue actualizado exitosamente`, platoActualizado: plato });
 });
