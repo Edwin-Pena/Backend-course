@@ -1,13 +1,8 @@
 import Fastify from 'fastify';
+import { Plato } from './interfaces/plato';
+import { existeIdPlato, existeNombrePlato } from './validaciones/existenciaPlato';
 
 const app = Fastify({ logger: true });
-
-//Objetos de menu
-interface Plato {
-  idPlato: string;
-  nombrePlato: string;
-  ingredienteAdicional?: string;
-}
 
 const platos: Plato[] = [
   { idPlato: '1', nombrePlato: 'Arroz con pollo' },
@@ -43,7 +38,7 @@ app.get('/platos', (req, res) => {
 //Path params
 app.get('/platos/:idPlato', (req, res) => {
   const { idPlato } = req.params as { idPlato: string };
-  const plato = platos.find((plato) => plato.idPlato === idPlato);
+  const plato = existeIdPlato(platos, idPlato);
 
   if (!plato) {
     return res.code(404).send({ error: 'El plato no fue encontrado' });
@@ -55,6 +50,14 @@ app.get('/platos/:idPlato', (req, res) => {
 // Método Post
 app.post('/platos', (req, res) => {
   const body = req.body as Plato;
+  const platoPorId = existeIdPlato(platos, body.idPlato);
+  const platoPorNombre = existeNombrePlato(platos, body.nombrePlato);
+
+  if (platoPorId || platoPorNombre) {
+    return res.code(409).send({ error: `no se pudo crear el elemento porque ya existe un plato con esa información` });
+  }
+
   platos.push(body);
-  return res.code(200).send({ mensaje: `Plato creado correctamente`, plato: body });
+
+  return res.code(201).send({ mensaje: `Plato creado correctamente`, plato: body });
 });
