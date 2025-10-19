@@ -2,7 +2,7 @@
 
 Esta es una de la formas de comenzar un proyecto con node y ts.
 
-1. Primero hay que correr el comando `npm run init` o `npm run init -y` (para crearlo de forma predeterminda) . El cual nos descarga la caprte de node_modules y tambien crea el archivo `package.josn`.
+1. Primero hay que correr el comando `npm init` o `npm init -y` (para crearlo de forma predeterminda) . El cual nos descarga la caprte de node_modules y tambien crea el archivo `package.josn`.
 
    #### configuración del package.json:
 
@@ -15,7 +15,7 @@ Esta es una de la formas de comenzar un proyecto con node y ts.
      "scripts": {
        "start": "node ./dist/index.js", //corre el JS compilado en dist/index.js
        "build": "tsc", //Equivalente a npx tsc (si tengo ts local o gobalmente),compila todo lo de src de ts a js.
-       "dev": "tsc --watch" // para ver cambios en tiempo real de ts.
+       "dev": "ts-node ./src/index.ts" // para ver cambios en tiempo real de ts.
      },
      "keywords": [],
      "author": "",
@@ -24,6 +24,7 @@ Esta es una de la formas de comenzar un proyecto con node y ts.
      "devDependencies": {
        //aparecen al instalar ts y types/node que nos indica el tsconfig
        "@types/node": "24.6.0",
+       "ts-node": "10.9.2",
        "typescript": "5.9.2"
      }
    }
@@ -45,7 +46,7 @@ Esta es una de la formas de comenzar un proyecto con node y ts.
        "module": "nodenext",
        "target": "esnext",
        // For nodejs:
-       // "lib": ["esnext"],
+       "lib": ["esnext"], //---> descomento esta para node
        //descomento "types": ["node"] y elimino el que esta descomentado
        "types": ["node"], //---> agrego esta para que trabaje con node
        // and npm install -D @types/node --> corro este comando luego para que ts entienda a node y sus variables
@@ -66,18 +67,20 @@ Esta es una de la formas de comenzar un proyecto con node y ts.
        // Recommended Options
        "strict": true,
        //"jsx": "react-jsx", ----> esta linea no es necesaria porque es para react
-       "verbatimModuleSyntax": true,
-       "isolatedModules": true,
-       "noUncheckedSideEffectImports": true,
-       "moduleDetection": "force",
-       "skipLibCheck": true
+       //"verbatimModuleSyntax": true,----> estas lineas son utiles en front
+       //"isolatedModules": true,----> estas lineas son utiles en front
+       //"noUncheckedSideEffectImports": true,----> estas lineas son utiles en front
+       //"moduleDetection": "force",  ---> eliminar
+       "skipLibCheck": true //----> dejarlo porque acelera la compilación y evita errores de tipos de librerías externas (por ejemplo express).
      }
    }
    ```
 
    Una vez ya tenemos el tsconfig.json de esta manera corremor el comando `npm install -D @types/node` que el mismo archivo ya nos indica para que ts pueda entender los comandos, variables y funciones que vienen en node.js
 
-3. Finalmente creamos la carpeta `/src` y podremos organizar y crear todos los archivos de nuestro proyecto ahí.
+3. instalamos ts-node con el comando `npm i -D ts-node`para correr el archivo index.ts (o main.ts) como si fuera js, pero solo como dependencia de desarrollo ya que esto no es recomendable y no se usa en producción.
+
+4. Finalmente creamos la carpeta `/src` y podremos organizar y crear todos los archivos de nuestro proyecto ahí.
 
 #### Luego ya podemos ejecutar los comandos:
 
