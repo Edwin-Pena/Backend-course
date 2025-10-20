@@ -1,8 +1,8 @@
 ## Configuración node.js y ts
 
-Esta es una de la formas de comenzar un proyecto con node y ts.
+Esta es una de la formas de comenzar un proyecto con node.js y ts.
 
-1. Primero hay que correr el comando `npm init` o `npm init -y` (para crearlo de forma predeterminda) . El cual nos descarga la caprte de node_modules y tambien crea el archivo `package.josn`.
+1. Primero hay que correr el comando `npm init` o `npm init -y` (para crearlo de forma predeterminda). El cual nos descarga la carpeta de node_modules y también crea el archivo `package.josn`.
 
    #### configuración del package.json:
 
@@ -32,15 +32,15 @@ Esta es una de la formas de comenzar un proyecto con node y ts.
 
 2. Luego instalamos TypeScript con el comando `npm install -D typescript` o `npm i -D typescript`. El **-D** del comando le indica a npm que lo instale en la sección de dependencias.
 
-   Después podremos ejecutar el comando de `npx tsc --init` para inicializar TypeScript y que se nos cree el archivo de tscongig.json y hacemos los siguientes cambios en ese archivo (los cambios son los que tienen `--->` en el comentario):
+   Después podremos ejecutar el comando de `npx tsc --init` para inicializar TypeScript y que se nos cree el archivo de tsconfig.json y hacemos los siguientes cambios en ese archivo (los cambios son los que tienen `--->` en el comentario):
 
    ```json
    {
      // Visit https://aka.ms/tsconfig to read more about this file
      "compilerOptions": {
        // File Layout
-       "rootDir": "./src", //---> descomento esta que indica donde estará mi código fuente
-       "outDir": "./dist", //---> descomento esta que indica donde saldrá el código compilado
+       "rootDir": "./src", //---> descomento esta que indica donde estará mi código fuente.
+       "outDir": "./dist", //---> descomento esta que indica donde saldrá el código compilado.
        // Environment Settings
        // See also https://aka.ms/tsconfig/module
        "module": "nodenext",
@@ -49,7 +49,7 @@ Esta es una de la formas de comenzar un proyecto con node y ts.
        "lib": ["esnext"], //---> descomento esta para node
        //descomento "types": ["node"] y elimino el que esta descomentado
        "types": ["node"], //---> agrego esta para que trabaje con node
-       // and npm install -D @types/node --> corro este comando luego para que ts entienda a node y sus variables
+       // and npm install -D @types/node --> corro este comando luego para que ts entienda a node y sus variables.
        // Other Outputs
        "sourceMap": true,
        "declaration": true,
@@ -66,11 +66,11 @@ Esta es una de la formas de comenzar un proyecto con node y ts.
        // "noPropertyAccessFromIndexSignature": true,
        // Recommended Options
        "strict": true,
-       //"jsx": "react-jsx", ----> esta linea no es necesaria porque es para react
-       //"verbatimModuleSyntax": true,----> estas lineas son utiles en front
-       //"isolatedModules": true,----> estas lineas son utiles en front
-       //"noUncheckedSideEffectImports": true,----> estas lineas son utiles en front
-       //"moduleDetection": "force",  ---> eliminar
+       //"jsx": "react-jsx", ----> esta linea no es necesaria porque es para react.
+       //"verbatimModuleSyntax": true,----> estas líneas son utiles en front.
+       //"isolatedModules": true,----> estas líneas son utiles en front.
+       //"noUncheckedSideEffectImports": true,----> estas líneas son utiles en front.
+       //"moduleDetection": "force",  ---> eliminar.
        "skipLibCheck": true //----> dejarlo porque acelera la compilación y evita errores de tipos de librerías externas (por ejemplo express).
      }
    }
