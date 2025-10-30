@@ -23,9 +23,9 @@ Esta es una de la formas de comenzar un proyecto con node.js y ts.
      "type": "module", //Se pone module para usar export & import.
      "devDependencies": {
        //aparecen al instalar ts y types/node que nos indica el tsconfig
+       "typescript": "5.9.2",
        "@types/node": "24.6.0",
-       "ts-node": "10.9.2",
-       "typescript": "5.9.2"
+       "tsx": "4.20.6"
      }
    }
    ```
