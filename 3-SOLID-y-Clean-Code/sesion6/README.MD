@@ -13,9 +13,9 @@ Esta es una de la formas de comenzar un proyecto con node.js y ts.
      "description": "",
      "main": "index.js", //archivo que inicializará los demás.
      "scripts": {
-       "start": "node ./dist/index.js", //corre el JS compilado en dist/index.js
        "build": "tsc", //Equivalente a npx tsc (si tengo ts local o gobalmente),compila todo lo de src de ts a js.
-       "dev": "ts-node ./src/index.ts" // para ver cambios en tiempo real de ts.
+       "start": "node ./dist/index.js", //corre el JS compilado en dist/index.js
+       "dev": "tsx ./src/index.ts" // para ver cambios en tiempo real de ts.
      },
      "keywords": [],
      "author": "",
@@ -43,8 +43,9 @@ Esta es una de la formas de comenzar un proyecto con node.js y ts.
        "outDir": "./dist", //---> descomento esta que indica donde saldrá el código compilado.
        // Environment Settings
        // See also https://aka.ms/tsconfig/module
-       "module": "nodenext",
-       "target": "esnext",
+       "module": "nodenext", //---> Le dice a TypeScript qué tipo de sistema de módulos usar al compilar
+       "target": "esnext", //----> significa "Compila al JavaScript más moderno posible según el entorno actual"
+       "esModuleInterop": true, //
        // For nodejs:
        "lib": ["esnext"], //---> descomento esta para node
        //descomento "types": ["node"] y elimino el que esta descomentado
@@ -65,20 +66,20 @@ Esta es una de la formas de comenzar un proyecto con node.js y ts.
        // "noFallthroughCasesInSwitch": true,
        // "noPropertyAccessFromIndexSignature": true,
        // Recommended Options
-       "strict": true,
+       "strict": true
        //"jsx": "react-jsx", ----> esta linea no es necesaria porque es para react.
        //"verbatimModuleSyntax": true,----> estas líneas son utiles en front.
        //"isolatedModules": true,----> estas líneas son utiles en front.
        //"noUncheckedSideEffectImports": true,----> estas líneas son utiles en front.
        //"moduleDetection": "force",  ---> eliminar.
-       "skipLibCheck": true //----> dejarlo porque acelera la compilación y evita errores de tipos de librerías externas (por ejemplo express).
+       //"skipLibCheck": true ----> eliminar
      }
    }
    ```
 
    Una vez ya tenemos el tsconfig.json de esta manera corremor el comando `npm install -D @types/node` que el mismo archivo ya nos indica para que ts pueda entender los comandos, variables y funciones que vienen en node.js
 
-3. instalamos ts-node con el comando `npm i -D ts-node`para correr el archivo index.ts (o main.ts) como si fuera js, pero solo como dependencia de desarrollo ya que esto no es recomendable y no se usa en producción.
+3. instalamos tsx con el comando `npm i -D tsx`para correr el archivo index.ts (o main.ts) como si fuera js, pero solo como dependencia de desarrollo ya que esto no es recomendable y no se usa en producción.
 
 4. Finalmente creamos la carpeta `/src` y podremos organizar y crear todos los archivos de nuestro proyecto ahí.
 
